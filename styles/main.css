@@ -1,0 +1,383 @@
+/* * {
+  margin: 0;
+  padding: 0;
+} */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arvo', sans-serif;
+  font-size: 16px;
+  color: white;
+  overflow: hidden;
+}
+
+.full-page {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  z-index: 10;
+}
+
+.full-page.active {
+  opacity: 1;
+}
+
+.full-width {
+  position: absolute;
+  width: 100vw;
+}
+
+h1 {
+  font-size: 15vh;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.00em;
+  text-shadow: 0.00em 0.02em 0.1em rgba(255, 255, 255, 0.8);
+}
+
+h2 {
+  font-size: 5vh;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  text-shadow: 0.00em 0.00em 0.4em rgba(255, 255, 255, 1.0);
+}
+
+/* START SCREEN */
+
+#start-screen {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+#title {
+  top: 15vh;
+  left: 0;
+  text-align: center;
+}
+
+#title h1, #title h2 {
+  position: relative;
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 0 0;
+  line-height: 1.2;
+  font-family: 'Eczar', sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#instruction {
+  bottom: -18vh;
+  left: 0;
+  height: 40vh;
+  text-align: center;
+}
+
+#to-begin {
+  position: absolute;
+  top: 5.5vh;
+  width: 100%;
+  font-size: 1.75vh;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0.00em 0.00em 0.1em rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.instruction-text {
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  font-size: 4.2vh;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+  text-shadow: 0.00em 0.00em 0.1em rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.05em;
+  transition: all 0.5s ease-in-out;
+}
+
+.instruction-text.active {
+  position: absolute;
+  top: 0;
+  opacity: 1;
+}
+
+
+/* GAME OVER SCREEN */
+#game-over {
+  background: linear-gradient(0deg, rgba(20, 0, 0, 1.0) 0%, rgba(30, 10, 5, 0.7) 80%, rgba(30, 10, 5, 0.2) 100%);
+}
+
+#game-over-headline {
+  top: 10vh;
+  text-align: center;
+}
+
+#all-stats {
+  position: absolute;
+  top: 30vh;
+  width: 70vw;
+  margin-left: 15vw;
+}
+
+.stat-box {
+  position: relative;
+  float: left;
+  width: 33%;
+  margin: 0 0 5vh 0;
+  padding: 0;
+  text-align: center;
+  opacity: 0;
+  transition: all 0.5s ease-in;
+}
+
+.stat-box.active {
+  opacity: 1.0;
+}
+
+.stat-heading {
+  padding: 0;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 1.8vh;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-shadow: 0.00em 0.00em 0.3em rgba(255, 255, 255, 0.7);
+  line-height: 1em;
+}
+
+.stat {
+  padding: 0;
+  margin-top: 0.5em;
+  text-transform: uppercase;
+  font-size: 4vh;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-shadow: 0.00em 0.00em 0.3em rgba(255, 255, 255, 1.0);
+  line-height: 1em;
+}
+
+/* #sunk .stat-heading, #treasure .stat-heading, #factory .stat-heading {
+  font-size: 3.0vh;
+}
+
+#sunk .stat, #treasure .stat, #factory .stat {
+  font-size: 8vh;
+  margin-top: 0.2em;
+} */
+
+body {
+  cursor: none;
+}
+
+#treasure-stat {
+  color: #FFFFAA;
+  animation: glow 1.5s ease infinite;
+}
+
+@keyframes glow {
+  0% {
+      text-shadow: 0 0 0.1em #FFFFAA;
+  }
+  50% {
+    text-shadow: 0 0 0.8em #FFFFAA;
+  }
+  100% {
+    text-shadow: 0 0 0.1em #FFFFAA;
+  }
+}
+
+#game-over #all-stats .end {
+  position: relative;
+  float: left;
+  width: 100%;
+  margin: 8vh 0 0 0;
+  padding: 0;
+  text-align: center;
+  transition: all 0.1s ease-in;
+  animation: blinker 1.25s ease infinite;
+}
+
+@keyframes blinker {
+  40% {
+      opacity: 0;
+  }
+}
+
+#game-over #all-stats .end p {
+  padding: 0;
+  margin-top: 0.5em;
+  text-transform: uppercase;
+  font-size: 2.5vh;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-shadow: 0.00em 0.00em 0.3em rgba(255, 255, 255, 1.0);
+  line-height: 1em;
+}
+
+#screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: 1;
+}
+
+#screen-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  /* background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 50, 0.8),
+    rgba(80, 0, 25, 0.8),
+    rgba(242, 208, 123, 0.7)
+  );
+  background-position: 50% 100%;
+
+  background-size: 100% 400%; */
+
+  background: #CCC;
+
+  z-index: -1;
+}
+
+@keyframes GradientA {
+	0% {
+		background-position: 50% 100%;
+  }
+	100% {
+		background-position: 50% 0%;
+	}
+}
+
+@keyframes GradientB {
+	0% {
+		background-position: 50% 0%;
+  }
+	100% {
+		background-position: 50% 100%;
+	}
+}
+
+#screen-bg.change-scene-0 {
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 50, 0.8),
+    rgba(80, 0, 25, 0.8),
+    rgba(242, 208, 123, 0.7)
+  );
+
+  background-size: 100% 400%;
+  animation: GradientA 4.5s ease-in-out;
+  animation-iteration-count: 1;
+}
+
+#screen-bg.change-scene-1 {
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 50, 0.8),
+    rgba(80, 0, 25, 0.8),
+    rgba(242, 208, 123, 0.7)
+  );
+
+  background-size: 100% 400%;
+  animation: GradientB 4.5s ease-in-out;
+  animation-iteration-count: 1;
+}
+
+#screen-hud {
+  position: absolute;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  margin-top: -20em;
+  text-align: center;
+  transition: all 500ms ease-in-out;
+}
+
+#screen-hud.active {
+  margin-top: 0.5em;
+}
+
+#enemy-counter {
+  position: absolute;
+  width: 20vh;
+  top: 0;
+  left: 0;
+  margin: 4vh;
+}
+
+#treasure-counter {
+  position: absolute;
+  width: 20vh;
+  top: 0;
+  right: 0;
+  margin: 4vh;
+}
+
+.hud .heading {
+  position: relative;
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 1.8vh;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-shadow: 0.00em 0.00em 0.3em rgba(255, 255, 255, 0.7);
+  line-height: 1em;
+}
+
+.hud .counter {
+  padding: 0;
+  margin-top: 2.5vh;
+  text-transform: uppercase;
+  font-size: 5vh;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-shadow: 0.00em 0.00em 0.3em rgba(255, 255, 255, 1.0);
+  line-height: 1em;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+#enemy-count.active {
+  animation: increaseCountA 200ms ease-out;
+  animation-iteration-count: 1;
+}
+
+#treasure-count.active {
+  animation: increaseCountB 200ms ease-out;
+  animation-iteration-count: 1;
+}
+
+@keyframes increaseCountA {
+  20% {
+    text-shadow: 0 0 0.6em #FF0000, 0 0 1em #FFFFFF;
+    font-size: 10vh;
+  }
+	100% {
+    text-shadow: 0.00em 0.00em 0.3em rgba(255, 255, 255, 1.0);
+    font-size: 5vh;
+	}
+}
+
+@keyframes increaseCountB {
+  20% {
+      text-shadow: 0 0 0.6em #FFAA00, 0 0 1em #FFFFFF;
+      font-size: 10vh;
+    }
+    100% {
+      text-shadow: 0.00em 0.00em 0.3em rgba(255, 255, 255, 1.0);
+      font-size: 5vh;
+    }
+  }

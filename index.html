@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mecha Markers</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      html, body {
+        font-family: Helvetica, sans-serif;
+        color: #222;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1.0;
+        overflow-x: hidden;
+      }
+
+      #marker-image {
+        display: block;
+        right: 0;
+        width: 74%;
+        position: absolute;
+        z-index: 0;
+      }
+
+      #parametersMenu {
+        position: relative;
+        float: left;
+        margin: 2em;
+        z-index: 5;
+      }
+
+      .parameterItem {
+        position: relative;
+        float: left;
+        clear: both;
+        margin-bottom: 0.5em;
+      }
+
+      .parameterItem span {
+        position: relative;
+        float: left;
+        width: 16em;
+        line-height: 1.7em;
+      }
+
+      .parameterItem input {
+        position: relative;
+        float: left;
+        width: 5em;
+      }
+
+      #loading_screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: white;
+      }
+
+      #black_square {
+        position: fixed;
+        top: 42vh;
+        left: 48.5vw;
+        width: 3vw;
+        height: 3vw;
+        background: black;
+        -webkit-animation:spin 1s ease-in-out infinite;
+        -moz-animation:spin 1s ease-in-out infinite;
+        animation:spin 1s ease-in-out infinite;
+      }
+
+      #loading_text {
+        position: fixed;
+        top: 55vh;
+        left: 40vw;
+        width: 20vw;
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      #input-gen {
+        position: fixed;
+        top: 0;
+        left: 2em;
+        color: white;
+        background: black;
+        padding: 10px 10px;
+        border-radius: 0 0 5px 5px;
+        cursor: pointer;
+        text-decoration: none;
+        z-index: 1000;
+        transition: all 100ms ease-in-out;
+      }
+
+      #input-gen:hover {
+        padding-top: 15px;
+      }
+
+      #toggle-vid {
+        background: white;
+        padding: 0.3em 0.5em; 
+        border: 1px solid black;
+        border-radius: 0.25em;
+        cursor: pointer;
+      }
+
+      #toggle-vid:hover {
+        background: #CCC;
+      }
+
+      #toggle-vid:active {
+        background: #777;
+      }
+
+      @-moz-keyframes spin { 100% { -moz-transform: rotate(270deg); } }
+      @-webkit-keyframes spin { 100% { -webkit-transform: rotate(270deg); } }
+      @keyframes spin { 100% { -webkit-transform: rotate(270deg); transform:rotate(270deg); } }
+    </style>
+  </head>
+
+  <body>
+    <div id="loading_screen">
+      <div id="black_square"></div>
+      <div id="loading_text">Loading Mechamarkers App</div>
+    </div>
+    
+
+    <div id="parametersMenu" class="hidden">
+        <a id="input-gen" href="./inputgenerator.html">&searr; Go to Input Generator</a>
+        <div class="parameterItem" style="margin: 4em 0 2em 0;">
+            <button id="toggle-vid">Toggle Video</button>
+        </div>
+        <div class="parameterItem">
+            <span>Camera Index</span>
+            <input name="camera id" type="number" min="0" step="1" value="0">
+        </div>
+        <div class="parameterItem">
+          <span>Flip Camera</span>
+          <input name="flip camera" type="checkbox" value="flip">
+        </div>
+        <div class="parameterItem">
+            <span>White Balance</span>
+            <input name="whiteBalance" type="number" min="0" max="3" step="0.01" value="1">
+        </div>
+        <div class="parameterItem" title="The adaptiveThreshWinSizeMin and adaptiveThreshWinSizeMax parameters represent the interval where the thresholding window sizes (in pixels) are selected for the adaptive thresholding (see OpenCV threshold() function for more details).">
+            <span>adaptiveThreshWinSizeMin</span>
+            <input name="adaptiveThreshWinSizeMin" type="number" min="3" step="1" value="3">
+        </div>
+        <div class="parameterItem" title="The parameter adaptiveThreshWinSizeStep indicates the increments on the window size from adaptiveThreshWinSizeMin to adaptiveThreshWinSizeMax">
+            <span>adaptiveThreshWinSizeStep</span>
+            <input name="adaptiveThreshWinSizeStep" type="number" min="1" step="1" value="9">
+        </div>
+        <div class="parameterItem" title="The adaptiveThreshWinSizeMin and adaptiveThreshWinSizeMax parameters represent the interval where the thresholding window sizes (in pixels) are selected for the adaptive thresholding (see OpenCV threshold() function for more details).">
+            <span>adaptiveThreshWinSizeMax</span>
+            <input name="adaptiveThreshWinSizeMax" type="number" min="3" step="1" value="23">
+        </div>
+        <div class="parameterItem" title="This parameter represents the constant value added in the thresholding condition (see OpenCV threshold() function for more details). Its default value 7 is a good option in most cases.">
+            <span>adaptiveThreshConstant</span>
+            <input name="adaptiveThreshConstant" type="number" min="0" step="0.1" value="7">
+        </div>
+        <div class="parameterItem" title="These parameters determine the minimum and maximum size of a marker, concretely the maximum and minimum marker perimeter. They are not specified in absolute pixels values, instead they are specified relative to the maximum dimension of the input image.">
+            <span>minMarkerPerimeterRate</span>
+            <input name="minMarkerPerimeterRate" type="number" min="0.01" step="0.01" max="4.0" value="0.03">
+        </div>
+        <div class="parameterItem" title="These parameters determine the minimum and maximum size of a marker, concretely the maximum and minimum marker perimeter. They are not specified in absolute pixels values, instead they are specified relative to the maximum dimension of the input image.">
+            <span>maxMarkerPerimeterRate</span>
+            <input name="maxMarkerPerimeterRate" type="number" min="0.01" step="0.01" max="4.0" value="0.5">
+        </div>
+        <div class="parameterItem" title="Minimum distance between any pair of corners in the same marker. It is expressed relative to the marker perimeter. Minimum distance in pixels is Perimeter * minCornerDistanceRate.">
+            <span>minCornerDistanceRate</span>
+            <input name="minCornerDistanceRate" type="number" min="0.01" step="0.01" max="1.0" value="0.05">
+        </div>
+        <div class="parameterItem" title="Minimum distance between any pair of corners from two different markers. It is expressed relative to the minimum marker perimeter of the two markers. If two candidates are too close, the smaller one is ignored.">
+            <span>minMarkerDistanceRate</span>
+            <input name="minMarkerDistanceRate" type="number" min="0.01" step="0.01" max="1.0" value="0.01">
+        </div>
+        <div class="parameterItem" title="Minimum distance to any of the marker corners to the image border (in pixels). Markers partially occluded by the image border can be correctly detected if the occlusion is small. However, if one of the corner is occluded, the returned corner is usually placed in a wrong position near the image border.">
+            <span>minDistanceToBorder</span>
+            <input name="minDistanceToBorder" type="number" min="1" step="1" value="3">
+        </div>
+        <div class="parameterItem" title="This parameter indicates the width of the marker border (default = 1). It is relative to the size of each bit. So, a value of 2 indicates the border has the width of two internal bits.">
+            <span>markerBorderBits</span>
+            <input name="markerBorderBits" type="number" min="1" step="1" value="1">
+        </div>
+        <div class="parameterItem" title="This value determines the minimum standard deviation on the pixels values to perform Otsu thresholding. If the deviation is low, it probably means that all the square is black (or white) and applying Otsu does not make sense. If this is the case, all the bits are set to 0 (or 1) depending if the mean value is higher or lower than 128.">
+            <span>minOtsuStdDev</span>
+            <input name="minOtsuStdDev" type="number" min="0" step="0.1" value="5.0">
+        </div>
+        <div class="parameterItem" title="This parameter determines the number of pixels (per cell) in the obtained image after removing perspective distortion (including the border). This is the size of the red squares in the image above. For instance, lets assume we are dealing with markers of 5x5 bits and border size of 1 bit (see markerBorderBits). Then, the total number of cells/bits per dimension is 5 + 2*1 = 7 (the border has to be counted twice). The total number of cells is 7x7. If the value of perpectiveRemovePixelPerCell is 10, then the size of the obtained image will be 10*7 = 70 -> 70x70 pixels. A higher value of this parameter can improve the bits extraction process (up to some degree), however it can penalize the performance.">
+            <span>perpectiveRemovePixelPerCell</span>
+            <input name="perspectiveRemovePixelPerCell" type="number" min="1" step="1" value="6">
+        </div>
+        <div class="parameterItem" title="When extracting the bits of each cell, the numbers of black and white pixels are counted. In general, it is not recommended to consider all the cell pixels. Instead it is better to ignore some pixels in the margins of the cells. The reason of this is that, after removing the perspective distortion, the cells' colors are, in general, not perfectly separated and white cells can invade some pixels of black cells (and vice-versa). Thus, it is better to ignore some pixels just to avoid counting erroneous pixels. This parameter is relative to the total size of the cell. For instance if the cell size is 40 pixels and the value of this parameter is 0.1, a margin of 40*0.1=4 pixels is ignored in the cells. This means that the total amount of pixels that would be analyzed on each cell would actually be 32x32, instead of 40x40.">
+            <span>perspectiveRemoveIgnoredMarginPerCell</span>
+            <input name="perspectiveRemoveIgnoredMarginPerCell" type="number" min="0" step="0.01" max="1.0" value="0.4">
+        </div>
+        <div class="parameterItem" title="The bits of the marker border should be black. This parameter specifies the allowed number of erroneous bits in the border, i.e. the maximum number of white bits in the border. It is represented relative to the total number of bits in the marker.">
+            <span>maxErroneousBitsInBorderRate</span>
+            <input name="maxErroneousBitsInBorderRate" type="number" min="0" step="0.01" max="1.0" value="0.6">
+        </div>
+        <div class="parameterItem" title="Each marker dictionary has a theoretical maximum number of bits that can be corrected (Dictionary.maxCorrectionBits). However, this value can be modified by the errorCorrectionRate parameter. For instance, if the allowed number of bits that can be corrected (for the used dictionary) is 6 and the value of errorCorrectionRate is 0.5, the real maximum number of bits that can be corrected is 6*0.5=3 bits. This value is useful to reduce the error correction capabilities in order to avoid false positives.">
+            <span>errorCorrectionRate</span>
+            <input name="errorCorrectionRate" type="number" min="0" step="0.01" value="1.5">
+        </div>
+    </div>
+    <img id="marker-image"></img>
+
+    <script>
+      const image = document.querySelector('#marker-image');
+      function init() {
+        document.querySelector('#loading_screen').classList.add('hidden');
+        document.querySelector('#parametersMenu').classList.remove('hidden');
+        websocket.send(JSON.stringify({ type: 'get camera params' }));
+        websocket.send(JSON.stringify({ type: 'send video' }));
+        hasVideo = true;
+
+        document.querySelector('#toggle-vid').addEventListener('click', () => {
+          hasVideo = !hasVideo;
+          if (hasVideo) websocket.send(JSON.stringify({ type: 'send video'}));
+          else websocket.send(JSON.stringify({ type: 'stop video'}));
+        });
+
+        const sendParam = (e) => {
+          let val = e.target.value;
+          if (e.target.type === 'checkbox') val = e.target.checked;
+          websocket.send(
+            JSON.stringify({ type: 'set camera param', name: e.target.name, value: val })
+          );
+        };
+
+        const params = document.querySelectorAll('.parameterItem');
+        for(let i = 0; i < params.length; i++) {
+          params[i].addEventListener('change', sendParam);
+        }
+      }
+      // require js for things here
+      let websocket;
+      let hasVideo = true;
+      let isConnected = false;
+
+      function initConnection() {
+        websocket = new WebSocket("ws://127.0.0.1:5000/");
+
+        websocket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        switch (data.type) {
+          case 'video':
+            image.src = 'data:image/png;base64,' + data.pixels;
+            break;
+          case 'camera params':
+            const params = JSON.parse(data.params);
+            Object.keys(params).forEach(key => {
+              if (key === 'flip camera') document.querySelector(`input[name="${key}"]`).checked = params[key];
+              else document.querySelector(`input[name="${key}"]`).value = params[key];
+            });
+            break;
+          // This is sent once when connection is formed
+          case 'connected':
+            isConnected = true;
+            init();
+            break;
+          }
+        };
+
+        setTimeout(() => {
+          if (!isConnected) initConnection();
+        }, 1000);
+      }
+
+      setTimeout(initConnection, 1000);
+    </script>
+  </body>
+</html>
